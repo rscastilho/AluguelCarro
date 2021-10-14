@@ -13,7 +13,7 @@ namespace AluguelCarro.Models {
         [StringLength(100, ErrorMessage = "Digite menos caracteres")]
         public string Rua { get; set; }
         [Required(ErrorMessage = "Campo obrigatório")]
-        [StringLength(15, ErrorMessage = "Digite menos caracteres")]
+        [Range(0, int.MaxValue, ErrorMessage = "Valor inválido")]
         public int Numero { get; set; }
         [Required(ErrorMessage = "Campo obrigatório")]
         [StringLength(50, ErrorMessage = "Digite menos caracteres")]

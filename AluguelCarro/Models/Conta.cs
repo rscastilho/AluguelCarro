@@ -12,6 +12,7 @@ namespace AluguelCarro.Models {
         public Usuario Usuario { get; set; }
        
         [Required(ErrorMessage = "Campo obrigatório")]
+        [Range(0,int.MaxValue, ErrorMessage ="Valor incorreto")]
         public int Saldo  { get; set; }
 
 

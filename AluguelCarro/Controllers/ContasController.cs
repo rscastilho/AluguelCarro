@@ -7,88 +7,59 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AluguelCarro.Context;
 using AluguelCarro.Models;
+using AluguelCarro.AcessoDados.Interfaces;
 
 namespace AluguelCarro.Controllers
 {
     public class ContasController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IContaRepository _contaRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public ContasController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public ContasController(IContaRepository contaRepository, IUsuarioRepository usuarioRepository) {
+            _contaRepository = contaRepository;
+            _usuarioRepository = usuarioRepository;
+            }
 
-        // GET: Contas
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Contas.Include(c => c.Usuario);
-            return View(await appDbContext.ToListAsync());
+            
+            return View(await _contaRepository.PegarTodos());
         }
 
-        // GET: Contas/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var conta = await _context.Contas
-                .Include(c => c.Usuario)
-                .FirstOrDefaultAsync(m => m.ContaId == id);
-            if (conta == null)
-            {
-                return NotFound();
-            }
-
-            return View(conta);
-        }
-
-        // GET: Contas/Create
+    
         public IActionResult Create()
         {
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id");
+            ViewData["UsuarioId"] = new SelectList(_usuarioRepository.PegarTodos(), "Id", "Email");
             return View();
         }
 
-        // POST: Contas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ContaId,UsuarioId,Saldo")] Conta conta)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(conta);
-                await _context.SaveChangesAsync();
+                await _contaRepository.Inserir(conta);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id", conta.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_usuarioRepository.PegarTodos(), "Id", "Email", conta.UsuarioId);
             return View(conta);
         }
 
-        // GET: Contas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        
 
-            var conta = await _context.Contas.FindAsync(id);
+            var conta = await _contaRepository.PegarPeloId(id);
             if (conta == null)
             {
                 return NotFound();
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id", conta.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_usuarioRepository.PegarTodos(), "Id", "Email", conta.UsuarioId);
             return View(conta);
         }
 
-        // POST: Contas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ContaId,UsuarioId,Saldo")] Conta conta)
@@ -100,61 +71,21 @@ namespace AluguelCarro.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(conta);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContaExists(conta.ContaId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                    await _contaRepository.Atualizar(conta);
+                
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id", conta.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_usuarioRepository.PegarTodos(), "Id", "Email", conta.UsuarioId);
             return View(conta);
         }
-
-        // GET: Contas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+               
+              
+        [HttpPost]
+        public async Task<JsonResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var conta = await _context.Contas
-                .Include(c => c.Usuario)
-                .FirstOrDefaultAsync(m => m.ContaId == id);
-            if (conta == null)
-            {
-                return NotFound();
-            }
-
-            return View(conta);
+            await _contaRepository.Excluir(id);
+            return Json("Conta excluida");
         }
 
-        // POST: Contas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var conta = await _context.Contas.FindAsync(id);
-            _context.Contas.Remove(conta);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ContaExists(int id)
-        {
-            return _context.Contas.Any(e => e.ContaId == id);
-        }
-    }
+          }
 }

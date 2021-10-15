@@ -20,7 +20,14 @@ namespace AluguelCarro.AcessoDados.Repositories {
             }
 
         public async Task<Usuario> PegarUsuarioLogado(ClaimsPrincipal usuario) {
-            return await _gerenciadorUsuario.GetUserAsync(usuario);
+            try {
+                return await _gerenciadorUsuario.GetUserAsync(usuario);
+                }
+            catch (Exception ex) {
+                throw ex;
+                }
+
+                       
             }
 
         public async Task<IdentityResult> SalvarUsuario(Usuario usuario, string senha) {

@@ -21,7 +21,13 @@ namespace AluguelCarro.Controllers {
             }
 
         public async Task<IActionResult> Index() {
-            return View( await _usuarioRepository.PegarUsuarioLogado(User));
+            try {
+                return View(await _usuarioRepository.PegarUsuarioLogado(User));
+                }
+            catch (Exception ex) {
+                throw ex;
+                }
+            
             }
 
 
@@ -124,6 +130,7 @@ namespace AluguelCarro.Controllers {
             var usuario = await _usuarioRepository.PegarPeloId(UsuarioId);
 
             var atualizarViewModel = new AtualizarViewModel {
+                
                 Id = usuario.Id,
                 Nome = usuario.Nome,
                 CPF = usuario.CPF,

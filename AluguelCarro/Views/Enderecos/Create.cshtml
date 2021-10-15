@@ -1,7 +1,7 @@
 ﻿@model AluguelCarro.Models.Endereco
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Novo Endereço";
 }
 <div class="border border-light rounded shadow col-md-8">
     <div class="container">
@@ -23,7 +23,7 @@
                     <div class="campos">
                         <div class="form-group">
                             <label asp-for="Numero" class="control-label">Descrição</label>
-                            <textarea asp-for="Numero" class="form-control form-control-lg"></textarea>
+                            <input asp-for="Numero" class="form-control form-control-lg"></input>
                             <span asp-validation-for="Numero" class="text-danger"></span>
                         </div>
                     </div>

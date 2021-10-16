@@ -14,7 +14,7 @@ namespace AluguelCarro.Models {
         [StringLength(50, ErrorMessage = "Digite menos caracteres")]
         public string Marca { get; set; }
 
-        [Required(ErrorMessage = "Campo obrigatório")]
+       // [Required(ErrorMessage = "Campo obrigatório")]
         public string Foto { get; set; }
         [Required(ErrorMessage = "Campo obrigatório")]
         

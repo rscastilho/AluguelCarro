@@ -1,0 +1,67 @@
+﻿@model IEnumerable<AluguelCarro.Models.Carro>
+
+@{
+    ViewData["Title"] = "Carros Cadastrados ";
+    var controller = "Carros";
+}
+
+<h3 class="titulos">
+    <i class="fas fa-car fa-lg"></i> Carros Cadastrados &nbsp;
+    <a asp-action="Create" asp-controller="Carros" class="btn btn-outline-secondary btn-lg" data-toggle="tooltip" data-placement="right" title="Novo carro">
+        <i class="fas fa-plus-circle"></i>
+    </a>
+</h3>
+
+<div class="row">
+
+    @foreach(var item in Model) {
+        <div class="col-4">
+            <div class="cartoes">
+                <div class="card">
+                    <img src="@Url.Content(item.Foto)" class="card-img-top img-fluid" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Marca - @item.Nome</h5>
+                        <h5><span class="badge badge-secondary text-black-50">R$ @item.PrecoDiaria,00</span></h5>
+                    </div>
+                    <div class="card-footer">
+                        @if(User.IsInRole("Administrador")) {
+                            <a asp-action="Edit" asp-controller="Carros" asp-route-id="@item.CarroId" class="btn btn-outline-info">Atualizar</a>
+                            <a onclick="ConfirmarExclusao(@item.CarroId, '@item.Nome', '@controller')" class="btn btn-outline-danger">Excluir</a>
+                            }
+                        else {
+                            <a asp-action="Alugar" asp-controller="Alugueis" asp-route-CarroId="@item.CarroId" asp-route-PrecoDiaria="@item.PrecoDiaria" class="btn btn-outline-info btn-block">Alugar veículo</a>
+                            }
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+</div>
+
+<partial name="_ModalExclusao" />
+
+@section Scripts
+    {
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+        function ConfirmarExclusao(id, nome, controller) {
+            $(".Nome").html(nome);
+            $(".modal").modal("show");
+            $(".btnExcluir").on('click', function () {
+                var url = "/" + controller + "/Delete/";
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: { id: id },
+                    success: function () {
+                        alert("Registro excluído");
+                        location.reload();
+                    }
+                })
+            })
+        }
+    </script>
+
+}

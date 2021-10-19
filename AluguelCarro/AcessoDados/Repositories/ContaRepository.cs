@@ -22,6 +22,11 @@ namespace AluguelCarro.AcessoDados.Repositories {
 
             }
 
+        public async Task<Conta> PegarSaldoPeloUsuarioId(string id) {
+            return await _context.Contas.FirstOrDefaultAsync(c => c.UsuarioId == id);
+                   
+            }
+
         public new async Task<IEnumerable<Conta>> PegarTodos() {
             return await _context.Contas.Include(c => c.Usuario).ToListAsync();
             }

@@ -8,6 +8,7 @@ namespace AluguelCarro.AcessoDados.Interfaces {
     public interface IContaRepository: IRepositoryGeneric<Conta> {
         new Task<IEnumerable<Conta>> PegarTodos();
         int PegarSaldoPeloId(string Id);
+        Task<Conta> PegarSaldoPeloUsuarioId(string id);
 
         }
     }

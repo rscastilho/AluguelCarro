@@ -57,7 +57,7 @@ namespace AluguelCarro.Controllers {
                 if(resultado.Succeeded) {
                     _logger.LogInformation("Novo usuário criado");
                     _logger.LogInformation("Atribuindo nível de acesso ao novo usuário");
-                    var nivelAcesso = "Administrador";
+                    var nivelAcesso = "Visitante";
 
                     await _usuarioRepository.AtribuirNivelAcesso(usuario, nivelAcesso);
                     _logger.LogInformation("Atribuição concluída");

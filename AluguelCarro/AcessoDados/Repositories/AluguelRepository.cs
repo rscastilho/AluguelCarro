@@ -1,4 +1,5 @@
-﻿using AluguelCarro.Context;
+﻿using AluguelCarro.AcessoDados.Interfaces;
+using AluguelCarro.Context;
 using AluguelCarro.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,6 +1,7 @@
 ﻿using AluguelCarro.AcessoDados.Interfaces;
 using AluguelCarro.Models;
 using AluguelCarro.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,8 +11,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace AluguelCarro.Controllers {
+    [Authorize]
     public class UsuariosController : Controller {
-
+        
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly ILogger<UsuariosController> _logger;
 
@@ -30,7 +32,7 @@ namespace AluguelCarro.Controllers {
             
             }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Registro() {
             if(User.Identity.IsAuthenticated)
                 await _usuarioRepository.EfetuarLogOut();
@@ -40,6 +42,7 @@ namespace AluguelCarro.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Registro(RegistroViewModel registro) {
             if(ModelState.IsValid) {
                 var usuario = new Usuario {
@@ -80,7 +83,7 @@ namespace AluguelCarro.Controllers {
             _logger.LogError("Informações de usuário inválidas");
             return View(registro);
             }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Login() {
                
                 if(User.Identity.IsAuthenticated)
@@ -93,6 +96,7 @@ namespace AluguelCarro.Controllers {
             }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel login) {
             if(ModelState.IsValid) {
                 _logger.LogInformation("Pegando o usuário pelo email");
@@ -105,7 +109,7 @@ namespace AluguelCarro.Controllers {
                         _logger.LogInformation("Informações corretas. Logando o usuário");
                         await _usuarioRepository.EfetuarLogin(usuario, false);
 
-                        return RedirectToAction("Index", "home");
+                        return RedirectToAction("Index", "Usuarios");
                         }
 
                     _logger.LogError("Informações inválidas");

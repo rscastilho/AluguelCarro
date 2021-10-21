@@ -9,8 +9,10 @@ using AluguelCarro.Context;
 using AluguelCarro.Models;
 using AluguelCarro.AcessoDados.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AluguelCarro.Controllers {
+    [Authorize]
     public class NiveisAcessosController : Controller {
         private readonly INivelAcessoRepository _nivelAcessoRepository;
         private readonly ILogger<NiveisAcessosController> _logger;

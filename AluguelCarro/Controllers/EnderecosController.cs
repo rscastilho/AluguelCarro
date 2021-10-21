@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using AluguelCarro.Context;
 using AluguelCarro.Models;
 using AluguelCarro.AcessoDados.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AluguelCarro.Controllers
 {
+    [Authorize]
     public class EnderecosController : Controller
     {
         private readonly IUsuarioRepository _usuarioRepositorio;

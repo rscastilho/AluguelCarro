@@ -11,9 +11,11 @@ using AluguelCarro.AcessoDados.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AluguelCarro.Controllers
 {
+    [Authorize]
     public class CarrosController : Controller
     {
         private readonly ICarroRepository _carroRepository;

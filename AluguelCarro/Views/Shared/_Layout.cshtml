@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/realeases/v5.7.2/css/all.css" />
 
     <link rel="stylesheet" href="~/css/site.css" />
-    <script src="https://kit.fontawesome.com/e750d3ce7d.js" ></script>
+    <script src="https://kit.fontawesome.com/e750d3ce7d.js"></script>
 </head>
 <body>
     <header>
@@ -19,33 +19,41 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link navbar-text text-white " asp-action="Registro" asp-controller="Usuarios">Registro </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link navbar-text text-white" asp-action="Login" asp-controller="Usuarios">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link navbar-text text-white" asp-action="Index" asp-controller="Usuarios">Meus dados</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link navbar-text text-white" asp-action="Index" asp-controller="Carros">Carros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link navbar-text text-white" asp-action="index" asp-controller="NiveisAcessos">Niveis de acesso</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link navbar-text text-white" asp-action="Index" asp-controller="Contas">Saldo</a>
-                        </li>
+
+                        @if(!User.Identity.IsAuthenticated) {
+                            <li class="nav-item active">
+                                <a class="nav-link navbar-text text-white " asp-action="Registro" asp-controller="Usuarios">Registro </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navbar-text text-white" asp-action="Login" asp-controller="Usuarios">Login</a>
+                            </li>
+                            }
+                        else {
+
+                            <li class="nav-item">
+                                <a class="nav-link navbar-text text-white" asp-action="Index" asp-controller="Usuarios">Meus dados</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navbar-text text-white" asp-action="Index" asp-controller="Carros">Carros</a>
+                            </li>
+                            }
+                        @if(User.IsInRole("Administrador")) {
+                            <li class="nav-item">
+                                <a class="nav-link navbar-text text-white" asp-action="index" asp-controller="NiveisAcessos">Niveis de acesso</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navbar-text text-white" asp-action="Index" asp-controller="Contas">Saldo</a>
+                            </li>
+                            }
+
 
                     </ul>
                     <partial name="_LoginPartial" />
 
 
-                    
+
                 </div>
             </nav>
 
@@ -72,7 +80,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-    
+
 
 
     <script src="~/js/site.js" asp-append-version="true"></script>
